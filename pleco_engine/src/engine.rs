@@ -80,6 +80,8 @@ impl PlecoSearcher {
                 }
                 "stop" => self.halt(),
                 "eval" => Evaluation::trace(&self.board),
+                "fen" => println!("{}", self.board.fen()),
+                "display" => self.board.fancy_print(),
                 _ => print!("Unknown Command: {}", full_command),
             }
             self.apply_all_options();
