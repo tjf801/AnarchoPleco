@@ -718,4 +718,26 @@ mod tests {
             iter.for_each(|(mb, ms)| assert_eq!(*mb, ms.bit_move));
         });
     }
+    
+    
+    #[test]
+    fn movegen_mandatory_ep() {
+        let b = Board::from_fen("5K1k/8/8/8/5pP1/8/8/8 b - g3 0 1").unwrap();
+        
+        // Kg8, Kg7, Kh7, f3, fxg3
+        let pseudolegal = b.generate_pseudolegal_moves();
+        assert_eq!(pseudolegal.len(), 5);
+        
+        // fxg3 only legal move (or else brick on pipi)
+        let legal = b.generate_moves();
+        assert_eq!(legal.len(), 1);
+        
+        assert_eq!(legal.iter().next().unwrap().flag(), crate::BitMove::FLAG_EP);
+        
+        let b2 = Board::from_fen("2r3k1/5ppp/8/1pP5/8/8/1R3PPP/6K1 w - b6 0 2").unwrap();
+        
+        let legal2 = b2.generate_moves();
+        assert_eq!(legal2.len(), 1);
+        assert_eq!(legal2.iter().next().unwrap().flag(), crate::BitMove::FLAG_EP);
+    }
 }

@@ -1829,7 +1829,24 @@ impl Board {
     }
 
     //  ------- Move Testing -------
-
+    
+    fn en_passant_possible(&self) -> bool {
+        if !self.ep_square().is_okay() {
+            return false
+        }
+        
+        let us: Player = self.turn;
+        
+        let ep_sq: SQ = self.ep_square();
+        assert_eq!(ep_sq.rank(), us.relative_rank(Rank::R6));
+        
+        let our_pawns: BitBoard = self.piece_bb(us, PieceType::P);
+        
+        let ep_capturers = our_pawns & pawn_attacks_from(ep_sq, !us);
+        
+        ep_capturers.is_not_empty()
+    }
+    
     /// Tests if a given pseudo-legal move is a legal. This is mostly for checking the legality of
     /// moves that were generated in a pseudo-legal fashion. Generating moves like this is faster,
     /// but doesn't guarantee legality due to the possibility of a discovered check happening.
@@ -1856,6 +1873,11 @@ impl Board {
 
             return (rook_moves(occupied, k_sq) & self.sliding_piece_bb(them)).is_empty()
                 && (bishop_moves(occupied, k_sq) & self.diagonal_piece_bb(them)).is_empty();
+        }
+        
+        // if en passant is possible, no other moves are legal
+        if self.en_passant_possible() {
+            return false;
         }
 
         let piece = self.piece_at_sq(src);
