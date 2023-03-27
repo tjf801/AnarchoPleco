@@ -79,6 +79,8 @@ impl PlecoSearcher {
                     break;
                 }
                 "stop" => self.halt(),
+                "fen" => println!("{}", self.board.fen()),
+                "display" => self.board.pretty_print(),
                 "eval" => Evaluation::trace(&self.board),
                 _ => print!("Unknown Command: {}", full_command),
             }
