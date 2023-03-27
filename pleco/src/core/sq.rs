@@ -389,9 +389,6 @@ impl SQ {
 
 impl fmt::Display for SQ {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        if self.0 == NO_SQ.0 {
-            return write!(f, "None");
-        }
         write!(f, "{}", SQ_DISPLAY[self.0 as usize])
     }
 }
