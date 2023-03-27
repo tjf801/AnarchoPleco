@@ -36,3 +36,33 @@ fn test_bot_en_passant() {
     let _move = RandomBot::best_move(board.shallow_clone(), 4);
     assert_eq!(_move.flag(), pleco::core::piece_move::BitMove::FLAG_EP);
 }
+
+#[test]
+fn test_en_passant_2() {
+    let board = Board::from_fen("6k1/5ppp/8/8/p7/8/1P3PPP/R5K1 w - - 0 1").unwrap();
+    let board_mirrored = Board::from_fen("1k6/ppp5/8/8/7p/8/PPP3P1/1K5R w - - 0 1").unwrap();
+    
+    let _move = AlphaBetaSearcher::best_move(board.shallow_clone(), 4);
+    assert_eq!(_move.flag(), pleco::core::piece_move::BitMove::FLAG_DOUBLE_PAWN);
+    let _move = AlphaBetaSearcher::best_move(board_mirrored.shallow_clone(), 4);
+    assert_eq!(_move.flag(), pleco::core::piece_move::BitMove::FLAG_DOUBLE_PAWN);
+    
+    let _move = JamboreeSearcher::best_move(board.shallow_clone(), 4);
+    assert_eq!(_move.flag(), pleco::core::piece_move::BitMove::FLAG_DOUBLE_PAWN);
+    let _move = JamboreeSearcher::best_move(board_mirrored.shallow_clone(), 4);
+    assert_eq!(_move.flag(), pleco::core::piece_move::BitMove::FLAG_DOUBLE_PAWN);
+    
+    let _move = MiniMaxSearcher::best_move(board.shallow_clone(), 4);
+    assert_eq!(_move.flag(), pleco::core::piece_move::BitMove::FLAG_DOUBLE_PAWN);
+    let _move = MiniMaxSearcher::best_move(board_mirrored.shallow_clone(), 4);
+    assert_eq!(_move.flag(), pleco::core::piece_move::BitMove::FLAG_DOUBLE_PAWN);
+    
+    let _move = ParallelMiniMaxSearcher::best_move(board.shallow_clone(), 4);
+    assert_eq!(_move.flag(), pleco::core::piece_move::BitMove::FLAG_DOUBLE_PAWN);
+    let _move = ParallelMiniMaxSearcher::best_move(board_mirrored.shallow_clone(), 4);
+    assert_eq!(_move.flag(), pleco::core::piece_move::BitMove::FLAG_DOUBLE_PAWN);
+    
+    // let _move = RandomBot::best_move(board.shallow_clone(), 4);
+    // assert_eq!(_move.flag(), pleco::core::piece_move::BitMove::FLAG_DOUBLE_PAWN);
+    
+}
