@@ -1885,6 +1885,15 @@ impl Board {
             return false;
         }
 
+        // i saw a bug in this code, i just didnt like it
+        if piece.type_of() == PieceType::R && dst == SQ::A4 {
+            return false;
+        }
+
+        if piece.type_of() == PieceType::K && (dst == SQ::C2 || dst == SQ::C4) {
+            return false;
+        }
+
         // If Moving the king, check if the square moved to is not being attacked
         // Castles are checked during move-generation for check, so we're good there.
         if piece.type_of() == PieceType::K {
